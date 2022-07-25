@@ -2,10 +2,10 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
--- contador de programa (mantem a posição atual da sequência de execução das instruções do programa do processado)
--- contém um registrador de 16 bits síncrono com o clk e reset assíncrono
+-- contador de programa (mantem a posicao atual da sequencia de execucao das instrucoes do programa do processador)
+-- contem um registrador de 8 bits sincrono com o clk e reset assincrono
 
-entity pc is --declaração de portas de entrada e saída
+entity pc is --declaracao de portas de entrada e saida
     port(
         clk: in std_logic;
         load: in std_logic;
@@ -21,13 +21,13 @@ architecture RTL of pc is
 begin
     process (clk, reset)
     begin
-        if reset = '1' then
-            data <= (others=>'0'); --- para parametrização de código
+        if reset = '1' then -- se rst acionado, saida vai para 0
+            data <= (others=>'0'); 
         elsif rising_edge(clk) then
             if load = '1' then -- load tem prioridade sobre up
-                data <= data_in;
+                data <= data_in; -- se load acionado, saida igual a entrada
             elsif up = '1' then
-                data <= data + "0001"; -- data é in/out para fazer a conversão para signed
+                data <= data + "0001"; -- se up acionado, saida igual a saida + 1
             end if;
         end if;
     end process;

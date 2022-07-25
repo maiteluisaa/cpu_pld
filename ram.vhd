@@ -12,6 +12,8 @@ entity ram is
     
     );
     
+	 -- modelo retirado do guia "VHDL Coding Styles" 
+	 -- declaracao de portas de entrada e saida
     port (
         clk : in std_logic;
         addr: in unsigned(7 downto 0);
@@ -27,22 +29,14 @@ architecture rtl of ram is
     type mem is array (0 to (size_mem - 1)) of std_logic_vector((size_bits - 1) downto 0);
     signal ram_block: mem;
     
-    -- Initialize memory with constant values
-    -- Does work with Quartus
-    -- signal ram_block: mem := ("1000000", "1111001", "0100100", "0110000",  -- 0, 1, 2, 3
-    --                          "0011001", "0010010", "0000010", "1111000",  -- 4, 5, 6, 7 
-    --                           "0000000", "0010000", "0001000", "0000011",  -- 8, 9, A, B 
-    --                            "0100111", "0100001", "0000110", "0001110",  -- C, D, E, F
-    --                            others => (others => '0'));
-
 begin
     process(clk)
     begin
         if (rising_edge(clk)) then
-            if we = '1' then 
+            if we = '1' then -- se enable de escrita ativado, na subida do clk ram(addr) recebe a entrada
                 ram_block(to_integer(addr)) <= data_in;
             end if;
-            q <= ram_block(to_integer(addr));
+            q <= ram_block(to_integer(addr)); -- na subida do clk, saida recebe ram(addr)
         end if;
     end process;    
 end rtl;

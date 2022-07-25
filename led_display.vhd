@@ -2,6 +2,9 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+-- Bloco que faz a codificacao do dado do registrador para os displays de 7 segs
+
+-- declaracao de portas de entrada e saida
 entity led_display is
     port(
         clk : in std_logic;
@@ -49,18 +52,14 @@ begin
     process(clk, rst)
     begin       
         if rst = '1' then
-            --! All displays resets to zero
+            -- se rst acionado, todos os displays mostram 0
             hex0 <= "11000000";
             hex1 <= "11000000"; 
             hex2 <= "11000000"; 
             hex3 <= "11000000"; 
-     --       hex4 <= "11000000"; 
-     --       hex5 <= "11000000"; 
-     --       hex6 <= "11000000"; 
-     --       hex7 <= "11000000"; 
         else
             if rising_edge(clk) then
-                if (wr_bus_en = '1' and mem_addr_bus = "11111111") then 
+                if (wr_bus_en = '1' and mem_addr_bus = "11111111") then -- senao, na subida do clk, no endereco FF e enable de escrita habilitado, realiza a codificacao
                     hex0 <= decode(data_w(3 downto 0));
                     hex1 <= decode(data_w(7 downto 4));
                     hex2 <= decode(data_w(11 downto 8));
